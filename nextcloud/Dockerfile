@@ -1,2 +1,2 @@
-ARG VERSION
-FROM nextcloud:${VERSION}
+ARG IMG
+FROM ${IMG}

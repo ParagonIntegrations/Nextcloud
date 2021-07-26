@@ -23,8 +23,8 @@ services:
     build:
       context: ./nextcloud
       args:
-        VERSION:${NEXTCLOUD_VERSION}
-    image: my_nextcloud:${VERSION}
+        IMG: nextcloud:${NEXTCLOUD_VERSION}
+    image: my_nextcloud:${NEXTCLOUD_VERSION}
     restart: always
     volumes:
       - ./datadir/nextcloud:/var/www/html
@@ -55,7 +55,7 @@ services:
 
   cron:
     container_name: cron
-    image: nextcloud:fpm-alpine
+    image: my_nextcloud:${NEXTCLOUD_VERSION}
     restart: always
     volumes:
       - ./datadir/nextcloud:/var/www/html
