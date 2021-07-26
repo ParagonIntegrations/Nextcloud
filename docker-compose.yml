@@ -3,27 +3,27 @@ version: '3'
 services:
   db:
     container_name: mariadb
-    image: mariadb:10.5
+    image: mariadb:${MARIADB_VERSION}
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     restart: always
     volumes:
-      - db:/var/lib/mysql
+      - ./datadir/mariadb:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=@*zN34H!
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     env_file:
       - db.env
 
   redis:
     container_name: redis
-    image: redis:alpine
+    image: redis:${REDIS_VERSION}
     restart: always
 
   app:
-    container_name: mqtt
+    container_name: nextcloud
     image: nextcloud:fpm-alpine
     restart: always
     volumes:
-      - nextcloud:/var/www/html
+      - ./datadir/nextcloud:/var/www/html
     environment:
       - MYSQL_HOST=db
       - REDIS_HOST=redis
@@ -34,10 +34,11 @@ services:
       - redis
 
   web:
+    container_name: web
     build: ./web
     restart: always
     volumes:
-      - nextcloud:/var/www/html:ro
+      - ./datadir/nextcloud:/var/www/html:ro
     environment:
       - VIRTUAL_HOST=nextcloud.paragonintegrations.co.za
       - LETSENCRYPT_HOST=nextcloud.paragonintegrations.co.za
@@ -49,16 +50,18 @@ services:
       - default
 
   cron:
+    container_name: cron
     image: nextcloud:fpm-alpine
     restart: always
     volumes:
-      - nextcloud:/var/www/html
+      - ./datadir/nextcloud:/var/www/html
     entrypoint: /cron.sh
     depends_on:
       - db
       - redis
 
   proxy:
+    container_name: proxy
     build: ./proxy
     restart: always
     ports:
@@ -67,20 +70,21 @@ services:
     labels:
       com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
     volumes:
-      - certs:/etc/nginx/certs:ro
-      - vhost.d:/etc/nginx/vhost.d
-      - html:/usr/share/nginx/html
+      - ./datadir/certs:/etc/nginx/certs:ro
+      - ./datadir/vhost.d:/etc/nginx/vhost.d
+      - ./datadir/html:/usr/share/nginx/html
       - /var/run/docker.sock:/tmp/docker.sock:ro
     networks:
       - proxy-tier
 
   letsencrypt-companion:
+    container_name: letsencryptcompanion
     image: jrcs/letsencrypt-nginx-proxy-companion
     restart: always
     volumes:
-      - certs:/etc/nginx/certs
-      - vhost.d:/etc/nginx/vhost.d
-      - html:/usr/share/nginx/html
+      - ./datadir/certs:/etc/nginx/certs
+      - ./datadir/vhost.d:/etc/nginx/vhost.d
+      - ./datadir/html:/usr/share/nginx/html
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - proxy-tier
@@ -101,13 +105,6 @@ services:
 #      - SSL_CERT=/certs/servhostname.local.crt
 #    networks:
 #      - proxy-tier
-
-volumes:
-  db:
-  nextcloud:
-  certs:
-  vhost.d:
-  html:
 
 networks:
   proxy-tier:
