@@ -74,9 +74,9 @@ services:
     labels:
       com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
     volumes:
-      - ./datadir/certs:/etc/nginx/certs:ro
-      - ./datadir/vhost.d:/etc/nginx/vhost.d
-      - ./datadir/html:/usr/share/nginx/html
+      - ./datadir/proxy/certs:/etc/nginx/certs:ro
+      - ./datadir/proxy/vhost.d:/etc/nginx/vhost.d
+      - ./datadir/proxy/html:/usr/share/nginx/html
       - /var/run/docker.sock:/tmp/docker.sock:ro
     networks:
       - proxy-tier
