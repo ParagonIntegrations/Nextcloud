@@ -1,2 +1,2 @@
-ARG
-FROM nextcloud:fpm-alpine
+ARG VERSION
+FROM nextcloud:${VERSION}

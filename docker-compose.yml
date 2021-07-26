@@ -20,7 +20,11 @@ services:
 
   app:
     container_name: nextcloud
-    image: nextcloud:fpm-alpine
+    build:
+      context: ./nextcloud
+      args:
+        VERSION:${NEXTCLOUD_VERSION}
+    image: my_nextcloud:${VERSION}
     restart: always
     volumes:
       - ./datadir/nextcloud:/var/www/html
@@ -82,9 +86,9 @@ services:
     image: jrcs/letsencrypt-nginx-proxy-companion
     restart: always
     volumes:
-      - ./datadir/certs:/etc/nginx/certs
-      - ./datadir/vhost.d:/etc/nginx/vhost.d
-      - ./datadir/html:/usr/share/nginx/html
+      - ./datadir/proxy/certs:/etc/nginx/certs
+      - ./datadir/proxy/vhost.d:/etc/nginx/vhost.d
+      - ./datadir/proxy/html:/usr/share/nginx/html
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - proxy-tier
