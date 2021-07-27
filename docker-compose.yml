@@ -18,7 +18,7 @@ services:
     image: redis:${REDIS_VERSION}
     restart: always
 
-  app:
+  nextcloud_app:
     container_name: nextcloud
     build:
       context: ./nextcloud
@@ -33,6 +33,7 @@ services:
       - REDIS_HOST=redis
     env_file:
       - db.env
+      - nextcloud.env
     depends_on:
       - db
       - redis
