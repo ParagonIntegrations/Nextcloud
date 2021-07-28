@@ -44,8 +44,8 @@ services:
     volumes:
       - ./datadir/nextcloud:/var/www/html:ro
     environment:
-      - VIRTUAL_HOST=nextcloud.paragonintegrations.co.za
-      - LETSENCRYPT_HOST=nextcloud.paragonintegrations.co.za
+      - VIRTUAL_HOST=nextcloudtest.paragonintegrations.co.za
+      - LETSENCRYPT_HOST=nextcloudtest.paragonintegrations.co.za
       - LETSENCRYPT_EMAIL=nelis@paragonintegrations.co.za
     depends_on:
       - app
