@@ -43,10 +43,8 @@ services:
     restart: always
     volumes:
       - ./datadir/nextcloud:/var/www/html:ro
-    environment:
-      - VIRTUAL_HOST=nextcloudtest.paragonintegrations.co.za
-      - LETSENCRYPT_HOST=nextcloudtest.paragonintegrations.co.za
-      - LETSENCRYPT_EMAIL=nelis@paragonintegrations.co.za
+    env_file:
+      - web.env
     depends_on:
       - app
     networks:
