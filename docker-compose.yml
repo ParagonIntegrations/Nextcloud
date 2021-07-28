@@ -43,7 +43,7 @@ services:
     build: ./web
     restart: always
     volumes:
-      - ./datadir/nextcloud:/var/www/html:ro
+      - ./datadir/nextcloud/main:/var/www/html:ro
     env_file:
       - web.env
     depends_on:
