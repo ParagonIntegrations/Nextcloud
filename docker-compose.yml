@@ -27,7 +27,8 @@ services:
     image: my_nextcloud:${NEXTCLOUD_VERSION}
     restart: always
     volumes:
-      - ./datadir/nextcloud:/var/www/html
+      - ./datadir/nextcloud/main:/var/www/html
+      - ./datadir/nextcloud/main/bucket/data:/var/www/html/data
     environment:
       - MYSQL_HOST=db
       - REDIS_HOST=redis
