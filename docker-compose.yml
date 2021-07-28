@@ -8,62 +8,63 @@ services:
     restart: always
     volumes:
       - ./datadir/mariadb:/var/lib/mysql
+      - ./datadir/nextcloud/bucket/data:/var/www/html/data:rshared
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     env_file:
       - db.env
 
-  redis:
-    container_name: redis
-    image: redis:${REDIS_VERSION}
-    restart: always
-
-  app:
-    container_name: nextcloud
-    build:
-      context: ./nextcloud
-      args:
-        IMG: nextcloud:${NEXTCLOUD_VERSION}
-    image: my_nextcloud:${NEXTCLOUD_VERSION}
-    restart: always
-    volumes:
-      - ./datadir/nextcloud/main:/var/www/html:rshared
-      - ./datadir/nextcloud/bucket/data:/var/www/html/data:rshared
-    environment:
-      - MYSQL_HOST=db
-      - REDIS_HOST=redis
-    env_file:
-      - db.env
-    depends_on:
-      - db
-      - redis
-
-  web:
-    container_name: web
-    build: ./web
-    restart: always
-    volumes:
-      - ./datadir/nextcloud/main:/var/www/html:ro
-      - ./datadir/nextcloud/bucket/data:/var/www/html/data:ro
-    env_file:
-      - web.env
-    depends_on:
-      - app
-    networks:
-      - proxy-tier
-      - default
-
-  cron:
-    container_name: cron
-    image: my_nextcloud:${NEXTCLOUD_VERSION}
-    restart: always
-    volumes:
-      - ./datadir/nextcloud/main:/var/www/html:rshared
-      - ./datadir/nextcloud/bucket/data:/var/www/html/data:rshared
-    entrypoint: /cron.sh
-    depends_on:
-      - db
-      - redis
+#  redis:
+#    container_name: redis
+#    image: redis:${REDIS_VERSION}
+#    restart: always
+#
+#  app:
+#    container_name: nextcloud
+#    build:
+#      context: ./nextcloud
+#      args:
+#        IMG: nextcloud:${NEXTCLOUD_VERSION}
+#    image: my_nextcloud:${NEXTCLOUD_VERSION}
+#    restart: always
+#    volumes:
+#      - ./datadir/nextcloud/main:/var/www/html:rshared
+#      - ./datadir/nextcloud/bucket/data:/var/www/html/data:rshared
+#    environment:
+#      - MYSQL_HOST=db
+#      - REDIS_HOST=redis
+#    env_file:
+#      - db.env
+#    depends_on:
+#      - db
+#      - redis
+#
+#  web:
+#    container_name: web
+#    build: ./web
+#    restart: always
+#    volumes:
+#      - ./datadir/nextcloud/main:/var/www/html:ro
+#      - ./datadir/nextcloud/bucket/data:/var/www/html/data:ro
+#    env_file:
+#      - web.env
+#    depends_on:
+#      - app
+#    networks:
+#      - proxy-tier
+#      - default
+#
+#  cron:
+#    container_name: cron
+#    image: my_nextcloud:${NEXTCLOUD_VERSION}
+#    restart: always
+#    volumes:
+#      - ./datadir/nextcloud/main:/var/www/html:rshared
+#      - ./datadir/nextcloud/bucket/data:/var/www/html/data:rshared
+#    entrypoint: /cron.sh
+#    depends_on:
+#      - db
+#      - redis
 
 #  proxy:
 #    container_name: proxy
