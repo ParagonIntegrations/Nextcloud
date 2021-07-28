@@ -41,21 +41,20 @@ services:
 
   nextcloud_app:
     container_name: nextcloud
-    build:
-      context: ./nextcloud
-      args:
-        IMG: nextcloud:${NEXTCLOUD_VERSION}
-    image: my_nextcloud:${NEXTCLOUD_VERSION}
+#    build:
+#      context: ./nextcloud
+#      args:
+#        IMG: nextcloud:${NEXTCLOUD_VERSION}
+    image: nextcloud:${NEXTCLOUD_VERSION}
     restart: always
     volumes:
       - ./datadir/nextcloud/main:/var/www/html
-      - ./datadir/nextcloud/bucket/data:/var/www/html/data:rshared
+      - ./datadir/nextcloud/bucket/data:/var/www/html/data
     environment:
       - MYSQL_HOST=db
       - REDIS_HOST=redis
     env_file:
       - db.env
-      - nextcloud.env
     depends_on:
       - db
       - redis
@@ -66,7 +65,7 @@ services:
     restart: always
     volumes:
       - ./datadir/nextcloud:/var/www/html
-      - ./datadir/nextcloud/bucket/data:/var/www/html/data:rshared
+      - ./datadir/nextcloud/bucket/data:/var/www/html/data
     entrypoint: /cron.sh
     depends_on:
       - db
