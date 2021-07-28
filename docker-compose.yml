@@ -28,7 +28,7 @@ services:
     restart: always
     volumes:
       - ./datadir/nextcloud/main:/var/www/html
-#      - ./datadir/nextcloud/bucket/data:/var/www/html/data
+      - ./datadir/nextcloud/bucket/data:/var/www/html/data
     environment:
       - MYSQL_HOST=db
       - REDIS_HOST=redis
@@ -44,6 +44,7 @@ services:
     restart: always
     volumes:
       - ./datadir/nextcloud/main:/var/www/html:ro
+      - ./datadir/nextcloud/bucket/data:/var/www/html/data:ro
     env_file:
       - web.env
     depends_on:
