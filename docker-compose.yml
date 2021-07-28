@@ -1,22 +1,22 @@
 version: '3'
 
 services:
-#  db:
-#    container_name: mariadb
-#    image: mariadb:${MARIADB_VERSION}
-#    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
-#    restart: always
-#    volumes:
-#      - ./datadir/mariadb:/var/lib/mysql
-#    environment:
-#      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-#    env_file:
-#      - db.env
-#
-#  redis:
-#    container_name: redis
-#    image: redis:${REDIS_VERSION}
-#    restart: always
+  db:
+    container_name: mariadb
+    image: mariadb:${MARIADB_VERSION}
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    restart: always
+    volumes:
+      - ./datadir/mariadb:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    env_file:
+      - db.env
+
+  redis:
+    container_name: redis
+    image: redis:${REDIS_VERSION}
+    restart: always
 
   s3fs:
     container_name: s3fs
@@ -39,104 +39,88 @@ services:
     env_file:
       - storage.env
 
+  nextcloud_app:
+    container_name: nextcloud
+    build:
+      context: ./nextcloud
+      args:
+        IMG: nextcloud:${NEXTCLOUD_VERSION}
+    image: my_nextcloud:${NEXTCLOUD_VERSION}
+    restart: always
+    volumes:
+      - ./datadir/nextcloud/main:/var/www/html
+      - ./datadir/nextcloud/data:/var/www/html/data
+    environment:
+      - MYSQL_HOST=db
+      - REDIS_HOST=redis
+    env_file:
+      - db.env
+      - nextcloud.env
+    depends_on:
+      - db
+      - redis
+      - s3fs
 
-#  nextcloud_app:
-#    container_name: nextcloud
-#    build:
-#      context: ./nextcloud
-#      args:
-#        IMG: nextcloud:${NEXTCLOUD_VERSION}
-#    image: my_nextcloud:${NEXTCLOUD_VERSION}
-#    restart: always
-#    volumes:
-#      - ./datadir/nextcloud/main:/var/www/html
-#      - ./datadir/nextcloud/data:/var/www/html/data
-#    environment:
-#      - MYSQL_HOST=db
-#      - REDIS_HOST=redis
-#    env_file:
-#      - db.env
-#      - nextcloud.env
-#    depends_on:
-#      - db
-#      - redis
-#      - s3fs
-#
-#  web:
-#    container_name: web
-#    build: ./web
-#    restart: always
-#    volumes:
-#      - ./datadir/nextcloud:/var/www/html:ro
-#      - ./datadir/nextcloud/data:/var/www/html/data:ro
-#    environment:
-#      - VIRTUAL_HOST=nextcloud.paragonintegrations.co.za
-#      - LETSENCRYPT_HOST=nextcloud.paragonintegrations.co.za
-#      - LETSENCRYPT_EMAIL=nelis@paragonintegrations.co.za
-#    depends_on:
-#      - nextcloud_app
-#    networks:
-#      - proxy-tier
-#      - default
-#
-#  cron:
-#    container_name: cron
-#    image: my_nextcloud:${NEXTCLOUD_VERSION}
-#    restart: always
-#    volumes:
-#      - ./datadir/nextcloud:/var/www/html
-#      - ./datadir/nextcloud/data:/var/www/html/data
-#    entrypoint: /cron.sh
-#    depends_on:
-#      - db
-#      - redis
-#      - s3fs
-#
-#  proxy:
-#    container_name: proxy
-#    build: ./proxy
-#    restart: always
-#    ports:
-#      - 80:80
-#      - 443:443
-#    labels:
-#      com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
-#    volumes:
-#      - ./datadir/proxy/certs:/etc/nginx/certs:ro
-#      - ./datadir/proxy/vhost.d:/etc/nginx/vhost.d
-#      - ./datadir/proxy/html:/usr/share/nginx/html
-#      - /var/run/docker.sock:/tmp/docker.sock:ro
-#    networks:
-#      - proxy-tier
-#
-#  letsencrypt-companion:
-#    container_name: letsencryptcompanion
-#    image: jrcs/letsencrypt-nginx-proxy-companion
-#    restart: always
-#    volumes:
-#      - ./datadir/proxy/certs:/etc/nginx/certs
-#      - ./datadir/proxy/vhost.d:/etc/nginx/vhost.d
-#      - ./datadir/proxy/html:/usr/share/nginx/html
-#      - /var/run/docker.sock:/var/run/docker.sock:ro
-#    networks:
-#      - proxy-tier
-#    depends_on:
-#      - proxy
+  cron:
+    container_name: cron
+    image: my_nextcloud:${NEXTCLOUD_VERSION}
+    restart: always
+    volumes:
+      - ./datadir/nextcloud:/var/www/html
+      - ./datadir/nextcloud/data:/var/www/html/data
+    entrypoint: /cron.sh
+    depends_on:
+      - db
+      - redis
+      - s3fs
 
-# self signed
-#  omgwtfssl:
-#    image: paulczar/omgwtfssl
-#    restart: "no"
-#    volumes:
-#      - certs:/certs
-#    environment:
-#      - SSL_SUBJECT=servhostname.local
-#      - CA_SUBJECT=my@example.com
-#      - SSL_KEY=/certs/servhostname.local.key
-#      - SSL_CSR=/certs/servhostname.local.csr
-#      - SSL_CERT=/certs/servhostname.local.crt
-#    networks:
-#      - proxy-tier
-#
-#networks:
-#  proxy-tier:
+  web:
+    container_name: web
+    build: ./web
+    restart: always
+    volumes:
+      - ./datadir/nextcloud:/var/www/html:ro
+      - ./datadir/nextcloud/data:/var/www/html/data:ro
+    environment:
+      - VIRTUAL_HOST=nextcloud.paragonintegrations.co.za
+      - LETSENCRYPT_HOST=nextcloud.paragonintegrations.co.za
+      - LETSENCRYPT_EMAIL=nelis@paragonintegrations.co.za
+    depends_on:
+      - nextcloud_app
+    networks:
+      - proxy-tier
+      - default
+
+  proxy:
+    container_name: proxy
+    build: ./proxy
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    labels:
+      com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
+    volumes:
+      - ./datadir/proxy/certs:/etc/nginx/certs:ro
+      - ./datadir/proxy/vhost.d:/etc/nginx/vhost.d
+      - ./datadir/proxy/html:/usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - proxy-tier
+
+  letsencrypt-companion:
+    container_name: letsencryptcompanion
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    restart: always
+    volumes:
+      - ./datadir/proxy/certs:/etc/nginx/certs
+      - ./datadir/proxy/vhost.d:/etc/nginx/vhost.d
+      - ./datadir/proxy/html:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - proxy-tier
+    depends_on:
+      - proxy
+
+networks:
+  proxy-tier:
