@@ -20,7 +20,7 @@ services:
 
   s3fs:
     container_name: s3fs
-    image: efrecon/s3fs:1.89
+    image: efrecon/s3fs:${S3FS_VERSION}
     restart: unless-stopped
     cap_add:
       - SYS_ADMIN
