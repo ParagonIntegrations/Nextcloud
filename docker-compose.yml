@@ -137,6 +137,6 @@ services:
 #      - SSL_CERT=/certs/servhostname.local.crt
 #    networks:
 #      - proxy-tier
-
-networks:
-  proxy-tier:
+#
+#networks:
+#  proxy-tier:
