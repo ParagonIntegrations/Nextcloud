@@ -49,7 +49,7 @@ services:
     restart: always
     volumes:
       - ./datadir/nextcloud/main:/var/www/html
-      - ./datadir/nextcloud/bucket/data:/var/www/html/data
+      - ./datadir/nextcloud/bucket/data:/var/www/html/data:rshared
     environment:
       - MYSQL_HOST=db
       - REDIS_HOST=redis
@@ -67,7 +67,7 @@ services:
     restart: always
     volumes:
       - ./datadir/nextcloud:/var/www/html
-      - ./datadir/nextcloud/bucket/data:/var/www/html/data
+      - ./datadir/nextcloud/bucket/data:/var/www/html/data:rshared
     entrypoint: /cron.sh
     depends_on:
       - db
