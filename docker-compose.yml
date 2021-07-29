@@ -27,7 +27,6 @@ services:
         S3FS_VERSION: ${S3FS_VERSION}
         UID: ${UID}
         GID: ${GID}
-
 #    image: efrecon/s3fs:${S3FS_VERSION}
     image: nelisvolschenk/s3fsnextcloud:${S3FS_VERSION}
     restart: unless-stopped
