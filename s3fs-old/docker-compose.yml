@@ -16,7 +16,7 @@ services:
     environment:
       AWS_S3_MOUNT: /opt/s3fs/bucket
       S3FS_ARGS: ''
-      S3FS_DEBUG: 0
+      S3FS_DEBUG: 1
       UID: 1000
       GID: 1000
     env_file:
