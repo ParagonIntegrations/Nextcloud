@@ -22,7 +22,7 @@ services:
   s3fs:
     container_name: s3fs
     build:
-      context: ./s3fsnextcloud
+      context: ./s3fs-client
       args:
         S3FS_VERSION: ${S3FS_VERSION}
         UID: ${UID}
