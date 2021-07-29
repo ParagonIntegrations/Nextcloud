@@ -34,7 +34,7 @@ services:
     devices:
       - /dev/fuse
     volumes:
-      - /datadir/nextcloud/bucket:/opt/s3fs/bucket:rshared
+      - datadir/nextcloud/bucket:/opt/s3fs/bucket:rshared
     environment:
       AWS_S3_MOUNT: /opt/s3fs/bucket
       S3FS_ARGS: ''
