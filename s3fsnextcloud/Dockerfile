@@ -27,6 +27,8 @@ RUN apk --no-cache add \
 
 FROM php:7.4-fpm-alpine3.13
 
+WORKDIR /
+
 COPY --from=build /usr/bin/s3fs /usr/bin/s3fs
 
 # Specify URL and secrets. When using AWS_S3_SECRET_ACCESS_KEY_FILE, the secret
