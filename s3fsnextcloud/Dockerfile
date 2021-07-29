@@ -1,4 +1,4 @@
-FROM php:7.4-fpm-alpine3.14 AS build
+FROM php:7.4-fpm-alpine3.13 AS build
 
 ARG S3FS_VERSION=v1.89
 
@@ -23,7 +23,7 @@ RUN apk --no-cache add \
   make -j && \
   make install
 
-FROM php:7.4-fpm-alpine3.14
+FROM php:7.4-fpm-alpine3.13
 
 COPY --from=build /usr/bin/s3fs /usr/bin/s3fs
 
