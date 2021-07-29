@@ -87,4 +87,6 @@ if [ -n "${mounted}" ]; then
     exec "$@"
 else
     echo "Mount failure"
+    echo ls /opt/s3fs
+    sleep 30
 fi
