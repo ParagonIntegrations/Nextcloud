@@ -1,24 +1,49 @@
 version: '3'
 
 services:
-  db:
-    container_name: mariadb
-    image: mariadb:${MARIADB_VERSION}
-    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
-    restart: always
-    volumes:
-      - ./datadir/mariadb:/var/lib/mysql
-      - ./datadir/nextcloud/bucket:/var/www/html/data:rshared
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-    env_file:
-      - db.env
-
+#  db:
+#    container_name: mariadb
+#    image: mariadb:${MARIADB_VERSION}
+#    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+#    restart: always
+#    volumes:
+#      - ./datadir/mariadb:/var/lib/mysql
+#      - ./datadir/nextcloud/bucket:/var/www/html/data:rshared
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+#    env_file:
+#      - db.env
+#
 #  redis:
 #    container_name: redis
 #    image: redis:${REDIS_VERSION}
 #    restart: always
 #
+  s3fs:
+    container_name: s3fs
+    build:
+      context: ./s3fsnextcloud
+      args:
+        S3FS_VERSION: ${S3FS_VERSION}
+    image: my_efrecon/s3fs:${S3FS_VERSION}
+    restart: unless-stopped
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - apparmor:unconfined
+    devices:
+      - /dev/fuse
+    volumes:
+      - ../datadir/nextcloud/bucket:/opt/s3fs/bucket:rshared
+    environment:
+      AWS_S3_MOUNT: /opt/s3fs/bucket
+      S3FS_ARGS: ''
+      S3FS_DEBUG: 0
+      UID: 1000
+      GID: 1000
+    env_file:
+      - storage.env
+
 #  app:
 #    container_name: nextcloud
 #    build:
