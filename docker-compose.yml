@@ -25,7 +25,7 @@ services:
       context: ./s3fsnextcloud
       args:
         S3FS_VERSION: ${S3FS_VERSION}
-    image: my_efrecon/s3fs:${S3FS_VERSION}
+    image: nelisvolschenk/s3fsnextcloud:${S3FS_VERSION}
     restart: unless-stopped
     cap_add:
       - SYS_ADMIN
