@@ -2,6 +2,8 @@ FROM php:7.4-fpm-alpine3.13 AS build
 
 ARG S3FS_VERSION=v1.89
 
+WORKDIR /
+
 RUN apk --no-cache add \
     ca-certificates \
     build-base \
