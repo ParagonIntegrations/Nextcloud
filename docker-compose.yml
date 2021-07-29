@@ -22,7 +22,7 @@ services:
   s3fs:
     container_name: s3fs
     build:
-      context: ./s3fs-client
+      context: ./s3fsnextcloud
       args:
         S3FS_VERSION: ${S3FS_VERSION}
     image: my_efrecon/s3fs:${S3FS_VERSION}
