@@ -52,7 +52,7 @@ if [ $UID -gt 0 ]; then
     RUN_AS=$UID
     chown $UID:$GID $AWS_S3_MOUNT
     chown $UID:$GID ${AWS_S3_AUTHFILE}
-    chown $UID:$GID /opt/s3fs
+    chown -R $UID:$GID /opt/s3fs
 fi
 
 # Debug options
