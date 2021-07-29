@@ -21,12 +21,15 @@ services:
 #
   s3fs:
     container_name: s3fs
-#    build:
-#      context: ./s3fsnextcloud
-#      args:
-#        S3FS_VERSION: ${S3FS_VERSION}
-    image: efrecon/s3fs:${S3FS_VERSION}
-    #image: nelisvolschenk/s3fsnextcloud:${S3FS_VERSION}
+    build:
+      context: ./s3fsnextcloud
+      args:
+        S3FS_VERSION: ${S3FS_VERSION}
+        UID: ${UID}
+        GID: ${GID}
+
+#    image: efrecon/s3fs:${S3FS_VERSION}
+    image: nelisvolschenk/s3fsnextcloud:${S3FS_VERSION}
     restart: unless-stopped
     cap_add:
       - SYS_ADMIN
@@ -40,8 +43,8 @@ services:
       AWS_S3_MOUNT: /opt/s3fs/bucket
       S3FS_ARGS: ''
       S3FS_DEBUG: 0
-      UID: 1000
-      GID: 1000
+      UID: ${UID}
+      GID: ${GID}
     env_file:
       - storage.env
 
