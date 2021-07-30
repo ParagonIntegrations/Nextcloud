@@ -1,5 +1,5 @@
 ARG S3FS_VERSION=1.89
-FROM nelisvolschenk/s3fs:1.89
+FROM nelisvolschenk/s3fs:${S3FS_VERSION}
 
 # dependencies required for running "phpize"
 # these get automatically installed and removed by "docker-php-ext-*" (unless they're already installed)
