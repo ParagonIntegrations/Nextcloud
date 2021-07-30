@@ -232,5 +232,3 @@ STOPSIGNAL SIGQUIT
 
 EXPOSE 9000
 #CMD ["php-fpm"]
-
-WORKDIR /opt/s3fs
