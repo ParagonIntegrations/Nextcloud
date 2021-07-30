@@ -3,7 +3,7 @@ services:
   s3fs:
     container_name: s3fs
     build:
-      context: ./s3fs
+      context: .
       args:
         S3FS_VERSION: ${S3FS_VERSION}
         ALPINE_VERSION: ${ALPINE_VERSION}
