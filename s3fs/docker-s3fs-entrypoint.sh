@@ -80,13 +80,13 @@ su - $RUN_AS -c "s3fs $DEBUG_OPTS ${S3FS_ARGS} \
 # Doing an operation actually forces it to detect that and remove the mount.
 ls "${AWS_S3_MOUNT}"
 
-mounted=$(mount | grep fuse.s3fs | grep "${AWS_S3_MOUNT}")
-echo "mount"
-mount
-echo "mount | grep fuse.s3fs"
-mount | grep fuse.s3fs
-echo "mount | grep fuse.s3fs | grep " ${AWS_S3_MOUNT}
-mount | grep fuse.s3fs | grep "${AWS_S3_MOUNT}"
+mounted=$(cat /etc/mtab | grep fuse.s3fs | grep "${AWS_S3_MOUNT}")
+echo "cat /etc/mtab"
+cat /etc/mtab
+echo "cat /etc/mtab | grep fuse.s3fs"
+cat /etc/mtab | grep fuse.s3fs
+echo "cat /etc/mtab | grep fuse.s3fs | grep " ${AWS_S3_MOUNT}
+cat /etc/mtab | grep fuse.s3fs | grep "${AWS_S3_MOUNT}"
 if [ -n "${mounted}" ]; then
     echo "Mounted bucket ${AWS_S3_BUCKET} onto ${AWS_S3_MOUNT}"
     exec "$@"
