@@ -1,4 +1,5 @@
-FROM alpine:3.13 AS build
+ARG ALPINE_VERSION=3.13
+FROM alpine:${ALPINE_VERSION} AS build
 
 ARG S3FS_VERSION=v1.89
 
@@ -23,7 +24,8 @@ RUN apk --no-cache add \
   make -j && \
   make install
 
-FROM alpine:3.13
+ARG ALPINE_VERSION=3.13
+FROM alpine:${ALPINE_VERSION}
 
 COPY --from=build /usr/bin/s3fs /usr/bin/s3fs
 
