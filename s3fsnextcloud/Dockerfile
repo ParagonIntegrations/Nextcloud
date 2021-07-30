@@ -1,8 +1,6 @@
-FROM php:7.4-fpm-alpine3.13 AS build
+FROM alpine:3.13 AS build
 
 ARG S3FS_VERSION=v1.89
-
-WORKDIR /
 
 RUN apk --no-cache add \
     ca-certificates \
@@ -25,9 +23,7 @@ RUN apk --no-cache add \
   make -j && \
   make install
 
-FROM php:7.4-fpm-alpine3.13
-
-WORKDIR /
+FROM alpine:3.13
 
 COPY --from=build /usr/bin/s3fs /usr/bin/s3fs
 

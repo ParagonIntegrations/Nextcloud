@@ -52,7 +52,7 @@ if [ $UID -gt 0 ]; then
     RUN_AS=$UID
     chown $UID:$GID $AWS_S3_MOUNT
     chown $UID:$GID ${AWS_S3_AUTHFILE}
-    chown -R $UID:$GID /opt/s3fs
+    chown $UID:$GID /opt/s3fs
 fi
 
 # Debug options
@@ -87,6 +87,4 @@ if [ -n "${mounted}" ]; then
     exec "$@"
 else
     echo "Mount failure"
-    echo ls /opt/s3fs
-    sleep 30
 fi
