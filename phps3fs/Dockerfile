@@ -181,11 +181,11 @@ RUN set -eux; \
 	php --version
 
 COPY docker-php-ext-* docker-php-entrypoint /usr/local/bin/
-### error start
+
 # sodium was built as a shared module (so that it can be replaced later if so desired), so let's enable it too (https://github.com/docker-library/php/issues/598)
 RUN docker-php-ext-enable sodium
-### error end
-ENTRYPOINT ["docker-php-entrypoint"]
+
+#ENTRYPOINT ["docker-php-entrypoint"]
 WORKDIR /var/www/html
 
 RUN set -eux; \
