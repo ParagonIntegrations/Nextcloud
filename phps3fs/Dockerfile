@@ -1,5 +1,5 @@
-
-FROM alpine:3.13
+ARG S3FS_VERSION
+FROM nelisvolschenk/s3fs:${S3FS_VERSION}
 
 # dependencies required for running "phpize"
 # these get automatically installed and removed by "docker-php-ext-*" (unless they're already installed)
@@ -185,7 +185,7 @@ COPY docker-php-ext-* docker-php-entrypoint /usr/local/bin/
 # sodium was built as a shared module (so that it can be replaced later if so desired), so let's enable it too (https://github.com/docker-library/php/issues/598)
 RUN docker-php-ext-enable sodium
 
-ENTRYPOINT ["docker-php-entrypoint"]
+#ENTRYPOINT ["docker-php-entrypoint"]
 WORKDIR /var/www/html
 
 RUN set -eux; \
@@ -231,4 +231,6 @@ RUN set -eux; \
 STOPSIGNAL SIGQUIT
 
 EXPOSE 9000
-CMD ["php-fpm"]
+#CMD ["php-fpm"]
+
+WORKDIR /opt/s3fs

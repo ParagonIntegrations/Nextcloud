@@ -19,16 +19,13 @@ services:
 #    image: redis:${REDIS_VERSION}
 #    restart: always
 #
-  s3fs:
-    container_name: s3fs
+  phps3fs:
+    container_name: phps3fs
     build:
-      context: ./s3fs
+      context: ./phps3fs
       args:
         S3FS_VERSION: ${S3FS_VERSION}
-        UID: ${UID}
-        GID: ${GID}
-#    image: efrecon/s3fs:${S3FS_VERSION}
-    image: nelisvolschenk/s3fs:${S3FS_VERSION}
+    image: nelisvolschenk/php:${PHP_VERSION}-fpm-s3fs:${S3FS_VERSION}
     restart: unless-stopped
     cap_add:
       - SYS_ADMIN
