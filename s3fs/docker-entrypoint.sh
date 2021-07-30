@@ -71,6 +71,7 @@ fi
 # detect that mounting was a success. Execute the command on success.
 echo "1"
 ls /opt/s3fs
+cat /etc/mtab
 
 su - $RUN_AS -c "s3fs $DEBUG_OPTS ${S3FS_ARGS} \
     -o passwd_file=${AWS_S3_AUTHFILE} \
@@ -83,6 +84,7 @@ su - $RUN_AS -c "s3fs $DEBUG_OPTS ${S3FS_ARGS} \
 # Doing an operation actually forces it to detect that and remove the mount.
 echo "2"
 ls /opt/s3fs
+cat /etc/mtab
 echo "3"
 ls "${AWS_S3_MOUNT}"
 
@@ -91,6 +93,5 @@ if [ -n "${mounted}" ]; then
     echo "Mounted bucket ${AWS_S3_BUCKET} onto ${AWS_S3_MOUNT}"
     exec "$@"
 else
-    ls /opt/s3fs
     echo "Mount failure"
 fi
