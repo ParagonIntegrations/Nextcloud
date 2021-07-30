@@ -13,3 +13,4 @@ exit_script() {
 
 trap "exit_script INT" INT
 trap "exit_script TERM" TERM
+trap "exit_script QUIT" QUIT
