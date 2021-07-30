@@ -69,7 +69,7 @@ RUN echo user_allow_other >> /etc/fuse.conf
 
 COPY *.sh /usr/local/bin/
 
-WORKDIR /opt/s3fs
+#WORKDIR /opt/s3fs
 
 # Following should match the AWS_S3_MOUNT environment variable.
 VOLUME [ "/opt/s3fs/bucket" ]
