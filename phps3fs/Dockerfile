@@ -1,4 +1,4 @@
-ARG S3FS_VERSION
+ARG S3FS_VERSION=1.89
 FROM nelisvolschenk/s3fs:${S3FS_VERSION}
 
 # dependencies required for running "phpize"
