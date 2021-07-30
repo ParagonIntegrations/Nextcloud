@@ -69,7 +69,7 @@ fi
 # Mount and verify that something is present. davfs2 always creates a lost+found
 # sub-directory, so we can use the presence of some file/dir as a marker to
 # detect that mounting was a success. Execute the command on success.
-
+echo "1"
 ls /opt/s3fs
 
 su - $RUN_AS -c "s3fs $DEBUG_OPTS ${S3FS_ARGS} \
@@ -81,7 +81,9 @@ su - $RUN_AS -c "s3fs $DEBUG_OPTS ${S3FS_ARGS} \
 
 # s3fs can claim to have a mount even though it didn't succeed.
 # Doing an operation actually forces it to detect that and remove the mount.
+echo "2"
 ls /opt/s3fs
+echo "3"
 ls "${AWS_S3_MOUNT}"
 
 mounted=$(mount | grep fuse.s3fs | grep "${AWS_S3_MOUNT}")
