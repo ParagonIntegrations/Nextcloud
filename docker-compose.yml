@@ -25,7 +25,7 @@ services:
       context: ./phps3fs
       args:
         S3FS_VERSION: ${S3FS_VERSION}
-    image: nelisvolschenk/php:${PHP_VERSION}-fpm-s3fs:${S3FS_VERSION}
+    #image: nelisvolschenk/php:${PHP_VERSION}-fpm-s3fs:${S3FS_VERSION}
     restart: unless-stopped
     cap_add:
       - SYS_ADMIN
