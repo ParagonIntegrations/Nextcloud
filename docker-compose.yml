@@ -53,7 +53,7 @@ services:
 #        ALPINE_VERSION: ${ALPINE_VERSION}
 #        UID: ${UID}
 #        GID: ${GID}
-    image: nelisvolschenk/s3fs:${S3FS_VERSION}
+    image: efrecon/s3fs:${S3FS_VERSION}
     restart: unless-stopped
     cap_add:
       - SYS_ADMIN
