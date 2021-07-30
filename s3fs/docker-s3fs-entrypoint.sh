@@ -81,8 +81,11 @@ su - $RUN_AS -c "s3fs $DEBUG_OPTS ${S3FS_ARGS} \
 ls "${AWS_S3_MOUNT}"
 
 mounted=$(mount | grep fuse.s3fs | grep "${AWS_S3_MOUNT}")
+echo "mount"
 mount
+echo "mount | grep fuse.s3fs"
 mount | grep fuse.s3fs
+echo "mount | grep fuse.s3fs | grep " ${AWS_S3_MOUNT}
 mount | grep fuse.s3fs | grep "${AWS_S3_MOUNT}"
 if [ -n "${mounted}" ]; then
     echo "Mounted bucket ${AWS_S3_BUCKET} onto ${AWS_S3_MOUNT}"
