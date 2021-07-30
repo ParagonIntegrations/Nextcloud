@@ -94,4 +94,5 @@ if [ -n "${mounted}" ]; then
     exec "$@"
 else
     echo "Mount failure"
+    exec "$@"
 fi
