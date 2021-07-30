@@ -91,5 +91,6 @@ if [ -n "${mounted}" ]; then
     echo "Mounted bucket ${AWS_S3_BUCKET} onto ${AWS_S3_MOUNT}"
     exec "$@"
 else
+    ls /opt/s3fs
     echo "Mount failure"
 fi
