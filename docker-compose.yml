@@ -44,7 +44,6 @@ services:
       S3FS_DEBUG: 0
       UID: ${UID}
       GID: ${GID}
-      SECOND_ENTRYPOINT: second-entrypoint-tester.sh
     env_file:
       - storage.env
 

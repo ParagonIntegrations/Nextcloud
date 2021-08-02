@@ -62,8 +62,10 @@ RUN mkdir /opt/s3fs && \
       libgcc \
       libstdc++ \
       tini && \
-      supervisor \
     s3fs --version
+
+# Also install supervisor
+apk --update add supervisor
 
 # allow access to volume by different user to enable UIDs other than root when using volumes
 RUN echo user_allow_other >> /etc/fuse.conf
