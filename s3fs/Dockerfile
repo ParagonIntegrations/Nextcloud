@@ -80,4 +80,4 @@ VOLUME [ "/opt/s3fs/bucket" ]
 # closes the connection.
 ENV SECOND_ENTRYPOINT=
 ENTRYPOINT [ "tini", "-g", "--", "docker-s3fs-entrypoint.sh" ]
-CMD [ "process-manager.sh" ]
+CMD [ "empty.sh" ]
