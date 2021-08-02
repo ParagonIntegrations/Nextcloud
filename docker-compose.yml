@@ -19,41 +19,16 @@ services:
 #    image: redis:${REDIS_VERSION}
 #    restart: always
 
-  s3fs:
-    container_name: s3fs
-    build:
-      context: ./s3fs
-      args:
-        S3FS_VERSION: ${S3FS_VERSION}
-        ALPINE_VERSION: ${ALPINE_VERSION}
-        UID: ${UID}
-        GID: ${GID}
-    image: nelisvolschenk/s3fs:${S3FS_VERSION}
-    restart: unless-stopped
-    cap_add:
-      - SYS_ADMIN
-    security_opt:
-      - apparmor:unconfined
-    devices:
-      - /dev/fuse
-    volumes:
-      - ./datadir/nextcloud/bucket:/opt/s3fs/bucket:rshared
-    environment:
-      AWS_S3_MOUNT: /opt/s3fs/bucket
-      S3FS_ARGS: ''
-      S3FS_DEBUG: 0
-      UID: ${UID}
-      GID: ${GID}
-    env_file:
-      - storage.env
-
-#  phps3fs:
-#    container_name: phps3fs
+#  s3fs:
+#    container_name: s3fs
 #    build:
-#      context: ./phps3fs
+#      context: ./s3fs
 #      args:
 #        S3FS_VERSION: ${S3FS_VERSION}
-#    image: nelisvolschenk/php:${PHP_VERSION}-fpm-s3fs${S3FS_VERSION}
+#        ALPINE_VERSION: ${ALPINE_VERSION}
+#        UID: ${UID}
+#        GID: ${GID}
+#    image: nelisvolschenk/s3fs:${S3FS_VERSION}
 #    restart: unless-stopped
 #    cap_add:
 #      - SYS_ADMIN
@@ -69,9 +44,34 @@ services:
 #      S3FS_DEBUG: 0
 #      UID: ${UID}
 #      GID: ${GID}
-#      SECOND_ENTRYPOINT: docker-php-entrypoint
 #    env_file:
 #      - storage.env
+
+  phps3fs:
+    container_name: phps3fs
+    build:
+      context: ./phps3fs
+      args:
+        S3FS_VERSION: ${S3FS_VERSION}
+    image: nelisvolschenk/php:${PHP_VERSION}-fpm-s3fs${S3FS_VERSION}
+    restart: unless-stopped
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - apparmor:unconfined
+    devices:
+      - /dev/fuse
+    volumes:
+      - ./datadir/nextcloud/bucket:/opt/s3fs/bucket:rshared
+    environment:
+      AWS_S3_MOUNT: /opt/s3fs/bucket
+      S3FS_ARGS: ''
+      S3FS_DEBUG: 0
+      UID: ${UID}
+      GID: ${GID}
+#      SECOND_ENTRYPOINT: docker-php-entrypoint
+    env_file:
+      - storage.env
 
 #  app:
 #    container_name: nextcloud
