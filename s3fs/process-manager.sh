@@ -4,24 +4,24 @@
 first_process=empty.sh
 second_process=
 
-#forward_signals() {
-#  SIGNAL=$1
-#  echo "Caught $SIGNAL!, forwarding"
-#  # Forward to process1
-#  if [ -n "$process1" ]; then
-#      echo "Forwarding $SIGNAL to $first_process"
-#      kill -$SIGNAL $process1
-#  fi
-#  # Forward to process2
-#  if [ -n "$process2" ]; then
-#      echo "Forwarding $SIGNAL to $second_process"
-#      kill -$SIGNAL $process2
-#  fi
-#}
-#
-#trap "forward_signals INT" INT
-#trap "forward_signals TERM" TERM
-#trap "forward_signals QUIT" QUIT
+forward_signals() {
+  SIGNAL=$1
+  echo "Caught $SIGNAL!, forwarding"
+  # Forward to process1
+  if [ -n "$process1" ]; then
+      echo "Forwarding $SIGNAL to $first_process"
+      kill -$SIGNAL $process1
+  fi
+  # Forward to process2
+  if [ -n "$process2" ]; then
+      echo "Forwarding $SIGNAL to $second_process"
+      kill -$SIGNAL $process2
+  fi
+}
+
+trap "forward_signals INT" INT
+trap "forward_signals TERM" TERM
+trap "forward_signals QUIT" QUIT
 
 # Start the first process
 ${first_process} &
