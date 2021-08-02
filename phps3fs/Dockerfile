@@ -232,4 +232,5 @@ RUN set -eux; \
 
 EXPOSE 9000
 #CMD ["php-fpm"]
+ENTRYPOINT ["docker-s3fs-entrypoint.sh"]
 CMD ["/usr/bin/supervisord"]
