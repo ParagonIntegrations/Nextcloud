@@ -1,6 +1,6 @@
 #! /usr/bin/env sh
 
-#define the processes
+# Define the processes
 first_process=empty.sh
 second_process=
 
