@@ -26,7 +26,6 @@ second_process=
 # Start the first process
 ${first_process} &
 status=$?
-process1=$! ${first_process}
 if [ $status -ne 0 ]; then
   echo "Failed to start ${first_process}: $status"
   exit $status
@@ -37,7 +36,6 @@ if [ -n "${SECOND_ENTRYPOINT}"]; then
   second_process=${SECOND_ENTRYPOINT}
   ${second_process} &
   status=$?
-  process2=$! ${second_process}
   if [ $status -ne 0 ]; then
     echo "Failed to start ${second_process}: $status"
     exit $status
