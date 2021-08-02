@@ -231,4 +231,5 @@ RUN set -eux; \
 # STOPSIGNAL SIGQUIT
 
 EXPOSE 9000
-CMD ["php-fpm"]
+#CMD ["php-fpm"]
+CMD ["/usr/bin/supervisord"]
