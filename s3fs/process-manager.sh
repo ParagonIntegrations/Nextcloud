@@ -1,11 +1,32 @@
 #! /usr/bin/env sh
 
-# Start the first process
+#define the processes
 first_process=empty.sh
 second_process=
 
-${first_process} -D
+forward_signals() {
+  SIGNAL=$1
+  echo "Caught $SIGNAL!, forwarding"
+  # Forward to process1
+  if [ -n "$process1" ]; then
+      echo "Forwarding $SIGNAL to $first_process"
+      kill -$SIGNAL $process1
+  fi
+  # Forward to process2
+  if [ -n "$process2" ]; then
+      echo "Forwarding $SIGNAL to $second_process"
+      kill -$SIGNAL $process2
+  fi
+}
+
+trap "forward_signals INT" INT
+trap "forward_signals TERM" TERM
+trap "forward_signals QUIT" QUIT
+
+# Start the first process
+${first_process} &
 status=$?
+process1=$! ${first_process}
 if [ $status -ne 0 ]; then
   echo "Failed to start ${first_process}: $status"
   exit $status
@@ -14,8 +35,9 @@ fi
 # Start the second process if it has been specified
 if [ -n "${SECOND_ENTRYPOINT}"]; then
   second_process=${SECOND_ENTRYPOINT}
-  ${second_process} -D
+  ${second_process} &
   status=$?
+  process2=$! ${second_process}
   if [ $status -ne 0 ]; then
     echo "Failed to start ${second_process}: $status"
     exit $status
