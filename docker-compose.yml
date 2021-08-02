@@ -69,7 +69,7 @@ services:
       S3FS_DEBUG: 0
       UID: ${UID}
       GID: ${GID}
-      SECOND_ENTRYPOINT: docker-php-entrypoint
+#      SECOND_ENTRYPOINT: docker-php-entrypoint
     env_file:
       - storage.env
 
