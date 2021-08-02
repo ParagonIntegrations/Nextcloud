@@ -2,7 +2,7 @@
 
 # Define the processes
 first_process=empty.sh
-second_process=
+second_process=${SECOND_ENTRYPOINT}
 
 forward_signals() {
   SIGNAL=$1
