@@ -3,6 +3,7 @@ ARG PHP_VERSION=7.4
 FROM php:${PHP_VERSION}-fpm-alpine${ALPINE_VERSION} AS build
 
 ARG S3FS_VERSION=v1.89
+WORKDIR /
 
 RUN apk --no-cache add \
     ca-certificates \
@@ -28,6 +29,7 @@ RUN apk --no-cache add \
 ARG ALPINE_VERSION=3.13
 ARG PHP_VERSION=7.4
 FROM php:${PHP_VERSION}-fpm-alpine${ALPINE_VERSION}
+WORKDIR /
 
 COPY --from=build /usr/bin/s3fs /usr/bin/s3fs
 
