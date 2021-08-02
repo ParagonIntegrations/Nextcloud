@@ -29,7 +29,7 @@ services:
         PHP_VERSION: ${PHP_VERSION}
         UID: ${UID}
         GID: ${GID}
-    image: nelisvolschenk/s3fs:${S3FS_VERSION}
+    image: nelisvolschenk/s3fs:${S3FS_VERSION}-php${PHP_VERSION}-fpm-alpine${ALPINE_VERSION}
     restart: unless-stopped
     cap_add:
       - SYS_ADMIN
