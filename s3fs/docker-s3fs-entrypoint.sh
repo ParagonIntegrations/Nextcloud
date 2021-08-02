@@ -89,7 +89,7 @@ mounted=$(cat /etc/mtab | grep fuse.s3fs | grep "${AWS_S3_MOUNT}")
 #cat /etc/mtab | grep fuse.s3fs | grep "${AWS_S3_MOUNT}"
 if [ -n "${mounted}" ]; then
     echo "Mounted bucket ${AWS_S3_BUCKET} onto ${AWS_S3_MOUNT}"
-    exec "$@"
+    exec "process-manager.sh"
 else
     echo "Mount failure exiting in 5 seconds."
     sleep 5
