@@ -3,6 +3,7 @@
 # Define the processes
 first_process=empty.sh
 second_process=${SECOND_ENTRYPOINT}
+echo $second_process
 
 forward_signals() {
   SIGNAL=$1
@@ -31,7 +32,7 @@ trap "forward_signals TERM" TERM
 trap "forward_signals QUIT" QUIT
 
 # Start the first process
-${first_process} -D
+${first_process} >/dev/null 2>&1
 status=$?
 process1=$! ${first_process}
 if [ $status -ne 0 ]; then
@@ -42,7 +43,7 @@ fi
 # Start the second process if it has been specified
 if [ -n "${SECOND_ENTRYPOINT}" ]; then
   echo "starting second process: ${second_process}"
-  ${second_process} -D
+  ${second_process} >/dev/null 2>&1
   status=$?
   process2=$! ${second_process}
   if [ $status -ne 0 ]; then
