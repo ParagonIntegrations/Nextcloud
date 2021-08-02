@@ -81,16 +81,17 @@ su - $RUN_AS -c "s3fs $DEBUG_OPTS ${S3FS_ARGS} \
 ls "${AWS_S3_MOUNT}"
 
 mounted=$(cat /etc/mtab | grep fuse.s3fs | grep "${AWS_S3_MOUNT}")
-echo "cat /etc/mtab"
-cat /etc/mtab
-echo "cat /etc/mtab | grep fuse.s3fs"
-cat /etc/mtab | grep fuse.s3fs
-echo "cat /etc/mtab | grep fuse.s3fs | grep " ${AWS_S3_MOUNT}
-cat /etc/mtab | grep fuse.s3fs | grep "${AWS_S3_MOUNT}"
+#echo "cat /etc/mtab"
+#cat /etc/mtab
+#echo "cat /etc/mtab | grep fuse.s3fs"
+#cat /etc/mtab | grep fuse.s3fs
+#echo "cat /etc/mtab | grep fuse.s3fs | grep " ${AWS_S3_MOUNT}
+#cat /etc/mtab | grep fuse.s3fs | grep "${AWS_S3_MOUNT}"
 if [ -n "${mounted}" ]; then
     echo "Mounted bucket ${AWS_S3_BUCKET} onto ${AWS_S3_MOUNT}"
     exec "$@"
 else
-    echo "Mount failure"
-    exec "$@"
+    echo "Mount failure exiting in 5 seconds."
+    sleep 5
+    exit 1
 fi

@@ -1,2 +1,49 @@
 #! /usr/bin/env sh
-. docker-s3fs-entrypoint.sh
+
+# Start the first process
+first_process=empty.sh
+second_process=
+
+${first_process} -D
+status=$?
+if [ $status -ne 0 ]; then
+  echo "Failed to start ${first_process}: $status"
+  exit $status
+fi
+
+# Start the second process if it has been specified
+if [ -n "${SECOND_ENTRYPOINT}"]; then
+  second_process=${SECOND_ENTRYPOINT}
+  ${second_process} -D
+  status=$?
+  if [ $status -ne 0 ]; then
+    echo "Failed to start ${second_process}: $status"
+    exit $status
+  fi
+fi
+
+# Naive check runs checks once a minute to see if either of the processes exited.
+# This illustrates part of the heavy lifting you need to do if you want to run
+# more than one service in a container. The container exits with an error
+# if it detects that either of the processes has exited.
+# Otherwise it loops forever, waking up every 60 seconds
+
+while sleep 60; do
+  ps aux | grep "${first_process}" | grep -q -v grep
+  PROCESS_1_STATUS=$?
+  ps aux | grep "${second_process}" | grep -q -v grep
+  PROCESS_2_STATUS=$?
+  # If the greps above find anything, they exit with 0 status
+  # Exit if either process is not found
+  if [ $PROCESS_1_STATUS -ne 0]; then
+    echo "${first_process} has already exited."
+    exit 1
+  fi
+  # Check whether there is a second process that should be running and if so make sure it is still up
+  if [ -n "${SECOND_ENTRYPOINT}"]; then
+    if [ $PROCESS_2_STATUS -ne 0]; then
+      echo "${second_process} has already exited."
+      exit 1
+    fi
+  fi
+done

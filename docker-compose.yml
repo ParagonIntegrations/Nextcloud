@@ -5,7 +5,7 @@ services:
 #    container_name: mariadb
 #    image: mariadb:${MARIADB_VERSION}
 #    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
-#    restart: always
+#    restart: unless-stopped
 #    volumes:
 #      - ./datadir/mariadb:/var/lib/mysql
 #      - ./datadir/nextcloud/bucket:/var/www/html/data:rshared
@@ -20,41 +20,13 @@ services:
 #    restart: always
 
 
-  phps3fs:
-    container_name: phps3fs
-    build:
-      context: ./phps3fs
-      args:
-        S3FS_VERSION: ${S3FS_VERSION}
-    image: nelisvolschenk/php:${PHP_VERSION}-fpm-s3fs${S3FS_VERSION}
-    restart: unless-stopped
-    cap_add:
-      - SYS_ADMIN
-    security_opt:
-      - apparmor:unconfined
-    devices:
-      - /dev/fuse
-    volumes:
-      - ./datadir/nextcloud/bucket:/opt/s3fs/bucket:rshared
-    environment:
-      AWS_S3_MOUNT: /opt/s3fs/bucket
-      S3FS_ARGS: ''
-      S3FS_DEBUG: 0
-      UID: ${UID}
-      GID: ${GID}
-    env_file:
-      - storage.env
-
-#  s3fs:
-#    container_name: s3fs
+#  phps3fs:
+#    container_name: phps3fs
 #    build:
-#      context: ./s3fs
+#      context: ./phps3fs
 #      args:
 #        S3FS_VERSION: ${S3FS_VERSION}
-#        ALPINE_VERSION: ${ALPINE_VERSION}
-#        UID: ${UID}
-#        GID: ${GID}
-#    image: nelisvolschenk/s3fs:${S3FS_VERSION}
+#    image: nelisvolschenk/php:${PHP_VERSION}-fpm-s3fs${S3FS_VERSION}
 #    restart: unless-stopped
 #    cap_add:
 #      - SYS_ADMIN
@@ -73,6 +45,34 @@ services:
 #    env_file:
 #      - storage.env
 
+  s3fs:
+    container_name: s3fs
+    build:
+      context: ./s3fs
+      args:
+        S3FS_VERSION: ${S3FS_VERSION}
+        ALPINE_VERSION: ${ALPINE_VERSION}
+        UID: ${UID}
+        GID: ${GID}
+    image: nelisvolschenk/s3fs:${S3FS_VERSION}
+    restart: unless-stopped
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - apparmor:unconfined
+    devices:
+      - /dev/fuse
+    volumes:
+      - ./datadir/nextcloud/bucket:/opt/s3fs/bucket:rshared
+    environment:
+      AWS_S3_MOUNT: /opt/s3fs/bucket
+      S3FS_ARGS: ''
+      S3FS_DEBUG: 0
+      UID: ${UID}
+      GID: ${GID}
+    env_file:
+      - storage.env
+
 #  app:
 #    container_name: nextcloud
 #    build:
@@ -80,7 +80,7 @@ services:
 #      args:
 #        IMG: nextcloud:${NEXTCLOUD_VERSION}
 #    image: my_nextcloud:${NEXTCLOUD_VERSION}
-#    restart: always
+#    restart: unless-stopped
 #    volumes:
 #      - ./datadir/nextcloud/main:/var/www/html:rshared
 #      - ./datadir/nextcloud/bucket/data:/var/www/html/data:rshared
@@ -96,7 +96,7 @@ services:
 #  web:
 #    container_name: web
 #    build: ./web
-#    restart: always
+#    restart: unless-stopped
 #    volumes:
 #      - ./datadir/nextcloud/main:/var/www/html:ro
 #      - ./datadir/nextcloud/bucket/data:/var/www/html/data:ro
@@ -111,7 +111,7 @@ services:
 #  cron:
 #    container_name: cron
 #    image: my_nextcloud:${NEXTCLOUD_VERSION}
-#    restart: always
+#    restart: unless-stopped
 #    volumes:
 #      - ./datadir/nextcloud/main:/var/www/html:rshared
 #      - ./datadir/nextcloud/bucket/data:/var/www/html/data:rshared
@@ -123,7 +123,7 @@ services:
 #  proxy:
 #    container_name: proxy
 #    build: ./proxy
-#    restart: always
+#    restart: unless-stopped
 #    ports:
 #      - 80:80
 #      - 443:443
@@ -140,7 +140,7 @@ services:
 #  letsencrypt-companion:
 #    container_name: letsencryptcompanion
 #    image: jrcs/letsencrypt-nginx-proxy-companion
-#    restart: always
+#    restart: unless-stopped
 #    volumes:
 #      - ./datadir/proxy/certs:/etc/nginx/certs
 #      - ./datadir/proxy/vhost.d:/etc/nginx/vhost.d
