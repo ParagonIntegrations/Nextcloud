@@ -8,6 +8,7 @@ echo $second_process
 forward_signals() {
   SIGNAL=$1
   echo "Caught $SIGNAL!, forwarding"
+  echo "${process1} and ${process2}"
   # Forward to process1
   if [ -n "$process1" ]; then
       echo "Forwarding $SIGNAL to $first_process"
@@ -32,7 +33,7 @@ trap "forward_signals TERM" TERM
 trap "forward_signals QUIT" QUIT
 
 # Start the first process
-${first_process} >/dev/null 2>&1
+${first_process} >/dev/null 2>&1 &
 status=$?
 process1=$! ${first_process}
 if [ $status -ne 0 ]; then
@@ -43,7 +44,7 @@ fi
 # Start the second process if it has been specified
 if [ -n "${SECOND_ENTRYPOINT}" ]; then
   echo "starting second process: ${second_process}"
-  ${second_process} >/dev/null 2>&1
+  ${second_process} >/dev/null 2>&1 &
   status=$?
   process2=$! ${second_process}
   if [ $status -ne 0 ]; then
