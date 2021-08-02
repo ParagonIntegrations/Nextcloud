@@ -83,5 +83,9 @@ VOLUME [ "/opt/s3fs/bucket" ]
 # to then have a command that will keep listing the files under the main share.
 # Listing the files will keep the share active and avoid that the remote server
 # closes the connection.
-ENTRYPOINT [ "tini", "-g", "--", "docker-s3fs-entrypoint.sh" ]
-CMD [ "empty.sh" ]
+#ENTRYPOINT [ "tini", "-g", "--", "docker-s3fs-entrypoint.sh" ]
+#CMD [ "empty.sh" ]
+
+ENTRYPOINT [ "docker-s3fs-entrypoint.sh" ]
+CMD ["/usr/bin/supervisord"]
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
