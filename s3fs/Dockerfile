@@ -79,5 +79,6 @@ VOLUME [ "/opt/s3fs/bucket" ]
 # Listing the files will keep the share active and avoid that the remote server
 # closes the connection.
 ENV SECOND_ENTRYPOINT=
+ENV SECOND_STOPSIGNAL=
 ENTRYPOINT [ "tini", "-g", "--", "docker-s3fs-entrypoint.sh" ]
 #CMD [ "empty.sh" ]

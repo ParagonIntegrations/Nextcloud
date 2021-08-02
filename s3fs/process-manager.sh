@@ -14,6 +14,13 @@ forward_signals() {
   fi
   # Forward to process2
   if [ -n "$process2" ]; then
+    # This is to allow alternate signals for the second process
+    if [ -n "${SECOND_STOPSIGNAL}" ]; then
+      if [ $SIGNAL -e TERM]; then
+        echo "Changing TERM to ${SECOND_STOPSIGNAL} and forwarding to $second_process"
+        kill -"${SECOND_STOPSIGNAL}" $process2
+      fi
+    fi
       echo "Forwarding $SIGNAL to $second_process"
       kill -$SIGNAL $process2
   fi
@@ -33,8 +40,8 @@ if [ $status -ne 0 ]; then
 fi
 
 # Start the second process if it has been specified
-if [ -n "${SECOND_ENTRYPOINT}"]; then
-  second_process=${SECOND_ENTRYPOINT}
+if [ -n "${SECOND_ENTRYPOINT}" ]; then
+  echo "starting second process: ${second_process}"
   ${second_process} &
   status=$?
   process2=$! ${second_process}
