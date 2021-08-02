@@ -1,5 +1,6 @@
 ARG ALPINE_VERSION=3.13
-FROM alpine:${ALPINE_VERSION} AS build
+ARG PHP_VERSION=7.4
+FROM FROM php:${PHP_VERSION}-fpm-alpine${ALPINE_VERSION} AS build
 
 ARG S3FS_VERSION=v1.89
 
@@ -25,7 +26,8 @@ RUN apk --no-cache add \
   make install
 
 ARG ALPINE_VERSION=3.13
-FROM alpine:${ALPINE_VERSION}
+ARG PHP_VERSION=7.4
+FROM FROM php:${PHP_VERSION}-fpm-alpine${ALPINE_VERSION}
 
 COPY --from=build /usr/bin/s3fs /usr/bin/s3fs
 
