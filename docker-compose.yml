@@ -19,33 +19,6 @@ services:
 #    image: redis:${REDIS_VERSION}
 #    restart: always
 
-
-  phps3fs:
-    container_name: phps3fs
-    build:
-      context: ./phps3fs
-      args:
-        S3FS_VERSION: ${S3FS_VERSION}
-    image: nelisvolschenk/php:${PHP_VERSION}-fpm-s3fs${S3FS_VERSION}
-    restart: unless-stopped
-    cap_add:
-      - SYS_ADMIN
-    security_opt:
-      - apparmor:unconfined
-    devices:
-      - /dev/fuse
-    volumes:
-      - ./datadir/nextcloud/bucket:/opt/s3fs/bucket:rshared
-    environment:
-      AWS_S3_MOUNT: /opt/s3fs/bucket
-      S3FS_ARGS: ''
-      S3FS_DEBUG: 0
-      UID: ${UID}
-      GID: ${GID}
-      #SECOND_ENTRYPOINT: docker-php-entrypoint
-    env_file:
-      - storage.env
-
 #  s3fs:
 #    container_name: s3fs
 #    build:
@@ -74,13 +47,39 @@ services:
 #    env_file:
 #      - storage.env
 
+  phps3fs:
+    container_name: phps3fs
+    build:
+      context: ./phps3fs
+      args:
+        S3FS_VERSION: ${S3FS_VERSION}
+    image: nelisvolschenk/php:${PHP_VERSION}-fpm-s3fs${S3FS_VERSION}
+    restart: unless-stopped
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - apparmor:unconfined
+    devices:
+      - /dev/fuse
+    volumes:
+      - ./datadir/nextcloud/bucket:/opt/s3fs/bucket:rshared
+    environment:
+      AWS_S3_MOUNT: /opt/s3fs/bucket
+      S3FS_ARGS: ''
+      S3FS_DEBUG: 0
+      UID: ${UID}
+      GID: ${GID}
+      SECOND_ENTRYPOINT: docker-php-entrypoint
+    env_file:
+      - storage.env
+
 #  app:
 #    container_name: nextcloud
 #    build:
 #      context: ./nextcloud
 #      args:
-#        IMG: nextcloud:${NEXTCLOUD_VERSION}
-#    image: my_nextcloud:${NEXTCLOUD_VERSION}
+#        NEXTCLOUD_VERSION:${NEXTCLOUD_VERSION}
+#    image: nelisvolschenk/nextcloud:${NEXTCLOUD_VERSION}-php${PHP_VERSION}-fpm-s3fs${S3FS_VERSION}
 #    restart: unless-stopped
 #    volumes:
 #      - ./datadir/nextcloud/main:/var/www/html:rshared
