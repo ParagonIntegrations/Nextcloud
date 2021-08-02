@@ -62,6 +62,7 @@ RUN mkdir /opt/s3fs && \
       libgcc \
       libstdc++ \
       tini && \
+      supervisor \
     s3fs --version
 
 # allow access to volume by different user to enable UIDs other than root when using volumes
@@ -78,7 +79,5 @@ VOLUME [ "/opt/s3fs/bucket" ]
 # to then have a command that will keep listing the files under the main share.
 # Listing the files will keep the share active and avoid that the remote server
 # closes the connection.
-ENV SECOND_ENTRYPOINT=
-ENV SECOND_STOPSIGNAL=
 ENTRYPOINT [ "tini", "-g", "--", "docker-s3fs-entrypoint.sh" ]
-#CMD [ "empty.sh" ]
+CMD [ "empty.sh" ]
