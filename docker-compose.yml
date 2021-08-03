@@ -54,7 +54,7 @@ services:
     build:
       context: ./nextcloud
       args:
-        NEXTCLOUD_VERSION:${NEXTCLOUD_VERSION}
+        NEXTCLOUD_VERSION: ${NEXTCLOUD_VERSION}
     image: nelisvolschenk/nextcloud:${NEXTCLOUD_VERSION}-s3fs${S3FS_VERSION}-php${PHP_VERSION}-fpm-alpine${ALPINE_VERSION}
     restart: unless-stopped
     volumes:
