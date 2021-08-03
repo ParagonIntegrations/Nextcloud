@@ -1,23 +1,23 @@
 version: '3'
 
 services:
-#  db:
-#    container_name: mariadb
-#    image: mariadb:${MARIADB_VERSION}
-#    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
-#    restart: unless-stopped
-#    volumes:
-#      - ./datadir/mariadb:/var/lib/mysql
-#      - ./datadir/nextcloud/bucket:/var/www/html/data:rshared
-#    environment:
-#      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-#    env_file:
-#      - db.env
-#
-#  redis:
-#    container_name: redis
-#    image: redis:${REDIS_VERSION}
-#    restart: always
+  db:
+    container_name: mariadb
+    image: mariadb:${MARIADB_VERSION}
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    restart: unless-stopped
+    volumes:
+      - ./datadir/mariadb:/var/lib/mysql
+      - ./datadir/nextcloud/bucket:/var/www/html/data:rshared
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    env_file:
+      - db.env
+
+  redis:
+    container_name: redis
+    image: redis:${REDIS_VERSION}
+    restart: always
 
 #  s3fs:
 #    container_name: s3fs
