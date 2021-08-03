@@ -27,7 +27,6 @@ services:
         S3FS_VERSION: ${S3FS_VERSION}
         ALPINE_VERSION: ${ALPINE_VERSION}
         PHP_VERSION: ${PHP_VERSION}
-        AWS_S3_MOUNT: /var/www/html/data
         UID: ${UID}
         GID: ${GID}
     image: nelisvolschenk/s3fs:${S3FS_VERSION}-php${PHP_VERSION}-fpm-alpine${ALPINE_VERSION}
