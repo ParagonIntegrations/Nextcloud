@@ -77,7 +77,7 @@ services:
     env_file:
       - db.env
       - storage.env
-      - nextcloud.env
+#      - nextcloud.env
     depends_on:
       - db
       - redis
