@@ -79,7 +79,7 @@ COPY *.sh /usr/local/bin/
 #WORKDIR /opt/s3fs
 
 # Following should match the AWS_S3_MOUNT environment variable.
-VOLUME ${AWS_S3_MOUNT}
+VOLUME /var/www/html/data
 
 # The default is to perform all system-level mounting as part of the entrypoint
 # to then have a command that will keep listing the files under the main share.
