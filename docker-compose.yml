@@ -96,22 +96,22 @@ services:
       - proxy-tier
       - default
 
-#  proxy:
-#    container_name: proxy
-#    build: ./proxy
-#    restart: unless-stopped
-#    ports:
-#      - 80:80
-#      - 443:443
-#    labels:
-#      com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
-#    volumes:
-#      - ./datadir/proxy/certs:/etc/nginx/certs:ro
-#      - ./datadir/proxy/vhost.d:/etc/nginx/vhost.d
-#      - ./datadir/proxy/html:/usr/share/nginx/html
-#      - /var/run/docker.sock:/tmp/docker.sock:ro
-#    networks:
-#      - proxy-tier
+  proxy:
+    container_name: proxy
+    build: ./proxy
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    labels:
+      com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
+    volumes:
+      - ./datadir/proxy/certs:/etc/nginx/certs:ro
+      - ./datadir/proxy/vhost.d:/etc/nginx/vhost.d
+      - ./datadir/proxy/html:/usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - proxy-tier
 
 #  letsencrypt-companion:
 #    container_name: letsencryptcompanion
