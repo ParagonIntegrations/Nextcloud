@@ -16,9 +16,9 @@ exit_script() {
     exit $?
 }
 
-trap "exit_script INT" INT
-trap "exit_script TERM" TERM
-trap "exit_script QUIT" QUIT
+trap "exit_script INT" SIGINT
+trap "exit_script TERM" SIGTERM
+trap "exit_script QUIT" SIGQUIT
 
 echo "about to start tail"
 tail -f /dev/null
