@@ -13,7 +13,7 @@ exit_script() {
         kill -$SIGNAL $s3fs
     fi
     trap - $SIGNAL # clear the trap
-    exit $?
+    exit SIGCHLD
 }
 
 trap "exit_script INT" SIGINT
