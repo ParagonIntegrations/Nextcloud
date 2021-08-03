@@ -1,5 +1,6 @@
 #! /usr/bin/env sh
 
+PERIOD=${1:-10}
 DEST=${AWS_S3_MOUNT:-/opt/s3fs/bucket}
 
 exit_script() {
@@ -20,6 +21,12 @@ trap "exit_script SIGINT" SIGINT
 trap "exit_script SIGTERM" SIGTERM
 trap "exit_script SIGQUIT" SIGQUIT
 
-while true
-  do sleep 1
+if [ $UID -gt 0 ]; then
+    RUN_AS=$UID
+fi
+
+while true; do
+    su - $RUN_AS -c "ls $DEST"
+    sleep $PERIOD &
+    wait $!
 done
