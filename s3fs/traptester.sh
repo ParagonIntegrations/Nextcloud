@@ -12,7 +12,7 @@ exit_script() {
         kill -$SIGNAL $s3fs
     fi
     trap - $SIGNAL # clear the trap
-    exit 1
+    exit $?
 }
 
 trap "exit_script SIGHUP" SIGHUP
