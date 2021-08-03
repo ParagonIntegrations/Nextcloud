@@ -131,6 +131,8 @@ COPY config/* /usr/src/nextcloud/config/
 
 #ENTRYPOINT ["/entrypoint.sh"]
 #CMD ["php-fpm"]
+
+RUN mkdir /var/log/supervisord /var/run/supervisord
 ENV NEXTCLOUD_UPDATE=1
 COPY supervisord-nextcloud.conf /etc/supervisor/supervisord-nextcloud.conf
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord-nextcloud.conf"]
