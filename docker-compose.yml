@@ -19,56 +19,62 @@ services:
 #    image: redis:${REDIS_VERSION}
 #    restart: always
 
-  s3fs:
-    container_name: s3fs
+#  s3fs:
+#    container_name: s3fs
+#    build:
+#      context: ./s3fs
+#      args:
+#        S3FS_VERSION: ${S3FS_VERSION}
+#        ALPINE_VERSION: ${ALPINE_VERSION}
+#        PHP_VERSION: ${PHP_VERSION}
+#        AWS_S3_MOUNT: /var/www/html/data
+#        UID: ${UID}
+#        GID: ${GID}
+#    image: nelisvolschenk/s3fs:${S3FS_VERSION}-php${PHP_VERSION}-fpm-alpine${ALPINE_VERSION}
+#    restart: unless-stopped
+#    cap_add:
+#      - SYS_ADMIN
+#    security_opt:
+#      - apparmor:unconfined
+#    devices:
+#      - /dev/fuse
+#    volumes:
+#      - ./datadir/nextcloud/bucket:/var/www/html/data:rshared
+#    environment:
+#      AWS_S3_MOUNT: /var/www/html/data
+#      S3FS_ARGS: ''
+#      S3FS_DEBUG: 0
+#      UID: ${UID}
+#      GID: ${GID}
+#    env_file:
+#      - storage.env
+
+  app:
+    container_name: nextcloud
     build:
-      context: ./s3fs
+      context: ./nextcloud
       args:
-        S3FS_VERSION: ${S3FS_VERSION}
-        ALPINE_VERSION: ${ALPINE_VERSION}
-        PHP_VERSION: ${PHP_VERSION}
-        AWS_S3_MOUNT: /var/www/html/data
-        UID: ${UID}
-        GID: ${GID}
-    image: nelisvolschenk/s3fs:${S3FS_VERSION}-php${PHP_VERSION}-fpm-alpine${ALPINE_VERSION}
+        NEXTCLOUD_VERSION:${NEXTCLOUD_VERSION}
+    image: nelisvolschenk/nextcloud:${NEXTCLOUD_VERSION}-s3fs${S3FS_VERSION}-php${PHP_VERSION}-fpm-alpine${ALPINE_VERSION}
     restart: unless-stopped
-    cap_add:
-      - SYS_ADMIN
-    security_opt:
-      - apparmor:unconfined
-    devices:
-      - /dev/fuse
     volumes:
-      - ./datadir/nextcloud/bucket:/var/www/html/data:rshared
+      - ./datadir/nextcloud/main:/var/www/html:rshared
+      - ./datadir/nextcloud/bucket/data:/var/www/html/data:rshared
     environment:
+      MYSQL_HOST: db
+      REDIS_HOST: redis
       AWS_S3_MOUNT: /var/www/html/data
       S3FS_ARGS: ''
       S3FS_DEBUG: 0
       UID: ${UID}
       GID: ${GID}
     env_file:
+      - db.env
       - storage.env
+    depends_on:
+      - db
+      - redis
 
-#  app:
-#    container_name: nextcloud
-#    build:
-#      context: ./nextcloud
-#      args:
-#        NEXTCLOUD_VERSION:${NEXTCLOUD_VERSION}
-#    image: nelisvolschenk/nextcloud:${NEXTCLOUD_VERSION}-php${PHP_VERSION}-fpm-s3fs${S3FS_VERSION}
-#    restart: unless-stopped
-#    volumes:
-#      - ./datadir/nextcloud/main:/var/www/html:rshared
-#      - ./datadir/nextcloud/bucket/data:/var/www/html/data:rshared
-#    environment:
-#      - MYSQL_HOST=db
-#      - REDIS_HOST=redis
-#    env_file:
-#      - db.env
-#    depends_on:
-#      - db
-#      - redis
-#
 #  web:
 #    container_name: web
 #    build: ./web

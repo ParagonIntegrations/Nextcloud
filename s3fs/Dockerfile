@@ -90,8 +90,8 @@ VOLUME [ "/var/www/html/data" ]
 
 STOPSIGNAL SIGTERM
 ENTRYPOINT [ "docker-s3fs-entrypoint.sh" ]
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord-s3fs-php.conf"]
 COPY supervisord-s3fs-php.conf /etc/supervisor/supervisord-s3fs-php.conf
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord-s3fs-php.conf"]
 
 # Set work dir back to php workdir
 WORKDIR /var/www/html
