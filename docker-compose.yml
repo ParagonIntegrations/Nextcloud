@@ -57,6 +57,12 @@ services:
         NEXTCLOUD_VERSION: ${NEXTCLOUD_VERSION}
     image: nelisvolschenk/nextcloud:${NEXTCLOUD_VERSION}-s3fs${S3FS_VERSION}-php${PHP_VERSION}-fpm-alpine${ALPINE_VERSION}
     restart: unless-stopped
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - apparmor:unconfined
+    devices:
+      - /dev/fuse
     volumes:
       - ./datadir/nextcloud/main:/var/www/html:rshared
       - ./datadir/nextcloud/bucket/data:/var/www/html/data:rshared
