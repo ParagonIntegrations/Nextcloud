@@ -1,4 +1,4 @@
-FROM nelisvolschenk/php:7.4-fpm-s3fs1.89
+FROM nelisvolschenk/s3fs:1.89-php7.4-fpm-alpine3.13
 
 # entrypoint.sh and cron.sh dependencies
 RUN set -ex; \
@@ -129,5 +129,6 @@ RUN set -ex; \
 COPY *.sh upgrade.exclude /
 COPY config/* /usr/src/nextcloud/config/
 
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["php-fpm"]
+#ENTRYPOINT ["/entrypoint.sh"]
+#CMD ["php-fpm"]
+ENV NEXTCLOUD_UPDATE=1
