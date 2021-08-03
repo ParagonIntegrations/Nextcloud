@@ -81,19 +81,19 @@ services:
       - db
       - redis
 
-#  web:
-#    container_name: web
-#    build: ./web
-#    restart: unless-stopped
-#    volumes:
-#      - ./datadir/nextcloud/main:/var/www/html:ro
-#    env_file:
-#      - web.env
-#    depends_on:
-#      - app
-#    networks:
-#      - proxy-tier
-#      - default
+  web:
+    container_name: web
+    build: ./web
+    restart: unless-stopped
+    volumes:
+      - ./datadir/nextcloud/main:/var/www/html:ro
+    env_file:
+      - web.env
+    depends_on:
+      - app
+    networks:
+      - proxy-tier
+      - default
 
 #  proxy:
 #    container_name: proxy
