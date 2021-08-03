@@ -26,7 +26,7 @@ if [ $UID -gt 0 ]; then
 fi
 
 while true; do
-    su - $RUN_AS -c "ls $DEST"
+    su - $RUN_AS -c "ls $DEST" > /dev/null
     sleep $PERIOD &
     wait $!
 done
