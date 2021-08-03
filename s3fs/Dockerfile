@@ -90,5 +90,5 @@ VOLUME [ "/opt/s3fs/bucket" ]
 
 STOPSIGNAL SIGTERM
 ENTRYPOINT [ "docker-s3fs-entrypoint.sh" ]
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+CMD ["/usr/bin/supervisord"]
+COPY supervisord.conf /etc/supervisor/supervisord.conf
