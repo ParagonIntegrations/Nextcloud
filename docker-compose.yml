@@ -87,7 +87,6 @@ services:
     restart: unless-stopped
     volumes:
       - ./datadir/nextcloud/main:/var/www/html:ro
-      - ./datadir/nextcloud/bucket/data:/var/www/html/data:ro
     env_file:
       - web.env
     depends_on:
