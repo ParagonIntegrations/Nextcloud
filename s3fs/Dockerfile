@@ -89,5 +89,5 @@ VOLUME [ "/opt/s3fs/bucket" ]
 #CMD [ "empty.sh" ]
 
 ENTRYPOINT [ "docker-s3fs-entrypoint.sh" ]
-CMD ["/usr/bin/supervisord"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor.conf"]
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
